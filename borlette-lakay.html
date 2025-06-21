@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Borlette Lakay</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>🎯 Borlette Lakay</h1>
+  <p>Antre 2 chif (00 - 99):</p>
+  <input type="number" id="nombre" min="0" max="99" />
+  <button onclick="tiraj()">Tire</button>
+  <div id="rezilta"></div>
+
+  <script>
+    function tiraj() {
+      const chwa = document.getElementById("nombre").value;
+      const rezilta = Math.floor(Math.random() * 100);
+      const mesaj = (parseInt(chwa) === rezilta)
+        ? "🎉 Bravo! Ou jwenn nimewo a!"
+        : `😢 Ou rate... Nimewo ki soti a se ${rezilta}`;
+      document.getElementById("rezilta").innerText = mesaj;
+    }
+  </script>
+</body>
+</html>

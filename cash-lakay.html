@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cash Lakay</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>💸 Cash Lakay</h1>
+  <p>Mize ou: minimòm 10 HTG</p>
+  <input type="number" id="mise" placeholder="Antre montan ou vle mize" min="10" />
+  <button onclick="startGame()">Kòmanse Vòl la</button>
+  <button onclick="collectCash()" id="collectBtn" disabled>💰 Ranmase Kach</button>
+  <div id="status">⏳ Prè pou vòl la...</div>
+
+  <script>
+    let crashPoint = 0;
+    let currentMultiplier = 1.0;
+    let gameInterval;
+    let isPlaying = false;
+    let hasCollected = false;
+
+    function startGame() {
+      const mise = parseInt(document.getElementById("mise").value);
+      if (isNaN(mise) || mise < 10) {
+        alert("Mete minimòm 10 HTG.");
+        return;
+      }
+      resetGame();
+      crashPoint = Math.random() * (10 - 1.3) + 1.3;
+      currentMultiplier = 1.0;
+      isPlaying = true;
+      hasCollected = false;
+      document.getElementById("status").innerText = "✈️ Vòl an kouri... x1.0";
+      document.getElementById("collectBtn").disabled = false;
+
+      gameInterval = setInterval(() => {
+        currentMultiplier += 0.1;
+        document.getElementById("status").innerText = `✈️ Vòl an kouri... x${currentMultiplier.toFixed(1)}`;
+        if (currentMultiplier >= crashPoint) {
+          clearInterval(gameInterval);
+          if (!hasCollected) {
+            document.getElementById("status").innerText = "💥 CRASH! Ou pèdi...";
+            document.getElementById("collectBtn").disabled = true;
+          }
+          isPlaying = false;
+        }
+      }, 500);
+    }
+
+    function collectCash() {
+      if (!isPlaying || hasCollected) return;
+      hasCollected = true;
+      clearInterval(gameInterval);
+      const mise = parseInt(document.getElementById("mise").value);
+      const gain = (mise * currentMultiplier).toFixed(2);
+      document.getElementById("status").innerText = `✅ Ou ranmase kach a x${currentMultiplier.toFixed(1)}! Ou genyen ${gain} HTG`;
+      document.getElementById("collectBtn").disabled = true;
+      isPlaying = false;
+    }
+
+    function resetGame() {
+      clearInterval(gameInterval);
+      document.getElementById("status").innerText = "⏳ Prè pou vòl la...";
+      document.getElementById("collectBtn").disabled = true;
+    }
+  </script>
+</body>
+</html>
